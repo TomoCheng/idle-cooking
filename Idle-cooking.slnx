@@ -1,0 +1,4 @@
+﻿<Solution>
+  <Project Path="Tomo.Framework.Editor.csproj" />
+  <Project Path="Tomo.Framework.Runtime.csproj" />
+</Solution>
