@@ -1,43 +1,66 @@
 using Cysharp.Threading.Tasks;
-using Kitchen.Data;
 using Kitchen.Runtime;
+using Tomo.Asset;
 using UnityEngine;
-using UnityEngine.AddressableAssets;
 using UnityEngine.UI;
 
 namespace Kitchen.UI
 {
 	public class Unit_FridgeSlot : Tomo.UI.Unit
 	{
-        // Public
-        public void Setup(FridgeSlot fridgeSlot)
-        {
-            _fridgeSlot = fridgeSlot;
-        }
+		// Public
+		public void Setup(FridgeSlot fridgeSlot)
+		{
+			_fridgeSlot = fridgeSlot;
+		}
 
-        private async UniTask RefreshAsync()
-        {
-            var sprite = await Addressables.LoadAssetAsync<Sprite>(_fridgeSlot.Ingredient.FridgeSlotIconName);
-            _image_Ingredient.sprite = sprite;
-        }
+		// Protected
+		protected override void OnRefresh()
+		{
+			RefreshAsync().Forget();
+		}
+		protected override void OnTick()
+		{
+			if (_fridgeSlot == null) { return; }
 
-        // Protected
-        protected override void OnRefresh()
-        {
-            RefreshAsync().Forget();
-        }
-        protected override void OnTick()
-        {
-            float progress = _fridgeSlot.FixedProduceTime - _fridgeSlot.RemainingTime;
-            _unit_Bar.SetValue(progress, _fridgeSlot.FixedProduceTime);
-            _unit_Bar.Tick();
-        }
+			float progress = _fridgeSlot.FixedProduceTime - _fridgeSlot.RemainingTime;
+			_unit_Bar.SetValue(progress, _fridgeSlot.FixedProduceTime);
+			_unit_Bar.Tick();
+			_unit_Timer.SetValue(progress, _fridgeSlot.FixedProduceTime);
+			_unit_Timer.Tick();
+		}
 
-        // Serialized properties
-        [SerializeField] private Unit_Bar _unit_Bar;
-        [SerializeField] private Image _image_Ingredient;
+		// Private
+		private async UniTask RefreshAsync()
+		{
+			if (_fridgeSlot == null || _fridgeSlot.Ingredient == null)
+			{
+				_image_Ingredient.enabled = false;
+				return;
+			}
 
-        // Variable
-        private FridgeSlot _fridgeSlot;
-    }
+			string iconName = _fridgeSlot.Ingredient.FridgeSlotIconName;
+			if (iconName == _loadedIconName)
+			{
+				_image_Ingredient.enabled = true;
+				return;
+			}
+
+			Sprite sprite = await AssetManager.Instance.LoadAsset<Sprite>(iconName, this.GetCancellationTokenOnDestroy());
+			if (sprite == null) { return; }
+
+			_loadedIconName = iconName;
+			_image_Ingredient.sprite = sprite;
+			_image_Ingredient.enabled = true;
+		}
+
+		// Serialized properties
+		[SerializeField] private Unit_Bar _unit_Bar;
+		[SerializeField] private Unit_Timer _unit_Timer;
+		[SerializeField] private Image _image_Ingredient;
+
+		// Variable
+		private FridgeSlot _fridgeSlot;
+		private string _loadedIconName;
+	}
 }

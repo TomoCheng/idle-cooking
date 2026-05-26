@@ -31,3 +31,30 @@ MonoBehaviour:
     _baseValue: 2
     _tags:
     - Meat
+  - _nameKey: ING_SHRIMP
+    _id: 2
+    _fridgeSlotIconName: S_FridgeSlot_Shrimp
+    _choppingBoardIconName: 
+    _choppedIconName: 
+    _baseProduceTime: 5
+    _baseValue: 3
+    _tags:
+    - Seafood
+  - _nameKey: ING_MEAT2
+    _id: 3
+    _fridgeSlotIconName: S_FridgeSlot_Meat
+    _choppingBoardIconName: 
+    _choppedIconName: 
+    _baseProduceTime: 8
+    _baseValue: 2
+    _tags:
+    - Meat
+  - _nameKey: ING_MEAT3
+    _id: 4
+    _fridgeSlotIconName: S_FridgeSlot_Meat
+    _choppingBoardIconName: 
+    _choppedIconName: 
+    _baseProduceTime: 8
+    _baseValue: 2
+    _tags:
+    - Meat

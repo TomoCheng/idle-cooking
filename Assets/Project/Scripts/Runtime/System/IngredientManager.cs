@@ -12,6 +12,11 @@ namespace Kitchen.Systems
 		public List<Ingredient> IngredientList => _SO_IngredientList != null ? _SO_IngredientList.Ingredients : null;
 
 		// Public
+		public override UniTask Initialize()
+		{
+			Setup();
+			return UniTask.CompletedTask;
+		}
 		public Ingredient GetIngredient(long id)
 		{
 			if (_ingredientMap.TryGetValue(id, out var ingredient))
@@ -19,13 +24,6 @@ namespace Kitchen.Systems
 				return ingredient;
 			}
 			return null;
-		}
-
-		// Protected
-		protected override void Awake()
-		{
-			base.Awake();
-			Setup();
 		}
 
 		// Private

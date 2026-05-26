@@ -15,13 +15,30 @@ MonoBehaviour:
   m_GroupName: Ingredient_FridgeSlot
   m_GUID: 71b64a1a45d67ec48924184285016cfb
   m_SerializeEntries:
+  - m_GUID: 1593c0ebf6a78424c802b3ec6afb367e
+    m_Address: Unit_FridgeSlot
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - preload
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 4dd80ffb5e0f0334a87b084fd72d80e2
     m_Address: S_FridgeSlot_Fish
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: c9f11721e4156fd40991c77c8bca69d6
+    m_Address: View_Kitchen
+    m_ReadOnly: 0
+    m_SerializedLabels:
+    - preload
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: e438b2411617f604e981204fb294f603
     m_Address: S_FridgeSlot_Meat
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f2bc649ea36b6c249b3012fee5c182d9
+    m_Address: S_FridgeSlot_Shrimp
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

@@ -1,46 +1,46 @@
-using UnityEngine;
+using Cysharp.Threading.Tasks;
+using Kitchen.Runtime;
 using System.Collections.Generic;
 using Tomo.Core;
-using Kitchen.Runtime;
+using UnityEngine;
 
 namespace Kitchen.Systems
 {
-    public class FridgeSlotManager : Singleton<FridgeSlotManager>
-    {
-        // Properties
-        public List<FridgeSlot> FridgeSlotList => _fridgeSlotList;
+	public class FridgeSlotManager : Singleton<FridgeSlotManager>
+	{
+		// Properties
+		public List<FridgeSlot> FridgeSlotList => _fridgeSlotList;
 
-        // Public
-        public FridgeSlot GetSlot(int index)
-        {
-            return (index >= 0 && index < _fridgeSlotList.Count) ? _fridgeSlotList[index] : null;
-        }
+		// Public
+		public override UniTask Initialize()
+		{
+			Setup();
+			return UniTask.CompletedTask;
+		}
+		public FridgeSlot GetSlot(int index)
+		{
+			return (index >= 0 && index < _fridgeSlotList.Count) ? _fridgeSlotList[index] : null;
+		}
 
-        // Protected
-        protected override void Awake()
-        {
-            base.Awake();
-            Setup();
-        }
+		// Private
+		private void Setup()
+		{
+			_fridgeSlotList.Clear();
+			foreach (var ingredient in IngredientManager.Instance.IngredientList)
+			{
+				_fridgeSlotList.Add(new FridgeSlot(new Data.IngredientClient(ingredient.Id)));
+			}
+		}
+		private void Update()
+		{
+			// 驅動所有格子的計時
+			foreach (var slot in _fridgeSlotList)
+			{
+				slot.Tick(Time.deltaTime);
+			}
+		}
 
-        private void Update()
-        {
-            // 驅動所有格子的計時
-            foreach (var slot in _fridgeSlotList)
-            {
-                slot.Tick(Time.deltaTime);
-            }
-        }
-
-        // Private
-        private void Setup()
-        {
-            _fridgeSlotList.Clear();
-            _fridgeSlotList.Add(new FridgeSlot(new Data.IngredientClient(0)));
-            _fridgeSlotList.Add(new FridgeSlot(new Data.IngredientClient(1)));
-        }
-
-        // Variable
-        private List<FridgeSlot> _fridgeSlotList = new List<FridgeSlot>();
-    }
+		// Variable
+		private List<FridgeSlot> _fridgeSlotList = new List<FridgeSlot>();
+	}
 }
